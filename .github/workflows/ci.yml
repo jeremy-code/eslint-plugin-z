@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: |
+          corepack enable
+          corepack prepare --activate
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint code with ESLint
+        id: eslint
+        continue-on-error: true
+        run: pnpm run lint --output-file results.sarif --format @microsoft/sarif
+
+      - name: Upload SARIF file
+        # https://github.com/jeremy-code/eslint-plugin-z/security/code-scanning
+        if: ${{ failure() && steps.eslint.outcome == 'failure' }}
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+          category: ESLint
+
+      - name: Check code formatting with Prettier
+        run: pnpm run format:check
+
+      - name: Check types with TypeScript compiler
+        run: pnpm run check-types
+
+      - name: Run tests
+        # https://nodejs.org/api/os.html#osavailableparallelism
+        run: pnpm test --ci --max-workers $(node -p "os.availableParallelism()")
+
+      - name: Build
+        run: pnpm run build
