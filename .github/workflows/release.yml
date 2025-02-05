@@ -14,13 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       attestations: write
-      contents: read
       deployments: write
       packages: write
       id-token: write
       statuses: read
       checks: write
       actions: write
+      contents: write
+      pull-requests: write
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
