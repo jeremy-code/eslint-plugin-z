@@ -17,8 +17,10 @@ export function getNodeChain(
     case AST_NODE_TYPES.Identifier:
       return [node];
     case AST_NODE_TYPES.MemberExpression: {
-      const objectChain = getNodeChain(node.object);
-      const propertyChain = getNodeChain(node.property);
+      const [objectChain, propertyChain] = [node.object, node.property].map(
+        (node) => getNodeChain(node),
+      );
+
       return objectChain && propertyChain ?
           [...objectChain, ...propertyChain]
         : null;

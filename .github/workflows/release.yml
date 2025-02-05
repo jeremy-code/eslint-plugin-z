@@ -18,6 +18,9 @@ jobs:
       deployments: write
       packages: write
       id-token: write
+      statuses: read
+      checks: write
+      actions: write
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4

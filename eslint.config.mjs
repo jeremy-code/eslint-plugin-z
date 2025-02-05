@@ -19,8 +19,7 @@ export default tseslint.config(
    * @see {@link https://github.com/eslint/eslint/blob/main/packages/js/src/configs/eslint-recommended.js#L11}
    */
   { name: "@eslint/js/recommended", ...eslint.configs.recommended },
-  // eslint-disable-next-line import-x/no-named-as-default-member -- `.configs` is a property of the plugin and using its named export would be confusing
-  tseslint.configs.recommendedTypeChecked,
+  tseslint["configs"].recommendedTypeChecked,
   comments.recommended,
   importX.flatConfigs.recommended,
   importX.flatConfigs.typescript,
@@ -51,6 +50,7 @@ export default tseslint.config(
           alphabetize: { order: "asc" },
         },
       ],
+      "import-x/namespace": ["error", { allowComputed: true }],
     },
     settings: {
       /**
@@ -80,7 +80,6 @@ export default tseslint.config(
   },
   {
     files: ["**/*.{js,cjs,jsx,mjs}"],
-    // eslint-disable-next-line import-x/no-named-as-default-member -- See above (line 22)
-    ...tseslint.configs.disableTypeChecked,
+    ...tseslint["configs"].disableTypeChecked,
   },
 );
