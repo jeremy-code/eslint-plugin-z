@@ -14,10 +14,13 @@ export const isZodNamespace = (
   node: TSESTree.Node,
   context: TSESLint.RuleContext<string, never[]>,
 ): node is TSESTree.Identifier => {
+  const zodNamespace = context.settings?.z?.zodNamespace ?? "z";
+  const zodImportSource = context.settings?.z?.zodImportSource ?? "zod";
+
   if (
     // Node is an identifier with the name `z`
     ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.Identifier, {
-      name: "z",
+      name: zodNamespace,
     })(node)
   ) {
     const zVariable = ASTUtils.findVariable(
@@ -36,7 +39,7 @@ export const isZodNamespace = (
       ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.ImportDeclaration, {
         importKind: "value", // Is not a type import
       })(importBindingDefinition.parent) &&
-      importBindingDefinition.parent.source.value === "zod" // Imported from the zod package
+      importBindingDefinition.parent.source.value === zodImportSource // Imported from the zod package
     ) {
       return true;
     }

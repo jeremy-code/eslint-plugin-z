@@ -25,6 +25,9 @@ export default tseslint.config(
   importX.flatConfigs.typescript,
   eslintPlugin.configs["flat/recommended"],
   {
+    linterOptions: {
+      reportUnusedInlineConfigs: "error",
+    },
     languageOptions: {
       parserOptions: {
         /**

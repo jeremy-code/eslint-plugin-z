@@ -12,7 +12,7 @@ const aEnum = z.enum(["a", "a", "a"]);
 aEnum.enum; // => { a: 'a' }
 aEnum.options; // => ['a', 'a', 'a']
 aEnum.extract(["a"]).options; // => ['a']
-aEnum.exclude(["a"]).options; // => ['a']
+aEnum.exclude(["a"]).options; // => []
 ```
 
 ## Rule Details

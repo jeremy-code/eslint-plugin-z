@@ -25,14 +25,7 @@ ruleTester.run("no-duplicate-enum-values", rule, {
 
         z.enum(["test1", "test1"])
       `,
-      errors: [
-        {
-          messageId: "duplicateValue",
-          data: {
-            value: "test1",
-          },
-        },
-      ],
+      errors: [{ messageId: "duplicateValue", data: { value: "test1" } }],
     },
   ],
 });
