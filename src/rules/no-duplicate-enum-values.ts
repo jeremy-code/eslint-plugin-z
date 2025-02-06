@@ -1,7 +1,7 @@
-import { AST_NODE_TYPES, TSESLint, ASTUtils } from "@typescript-eslint/utils";
+import { AST_NODE_TYPES, ASTUtils } from "@typescript-eslint/utils";
 
 import { createRule } from "../utils/createRule";
-import { isImportClause } from "../utils/isImportClause";
+import { isZodNamespace } from "../utils/isZodNamespace";
 
 export default createRule({
   create(context) {
@@ -9,51 +9,34 @@ export default createRule({
       CallExpression(node) {
         if (
           ASTUtils.isNodeOfType(AST_NODE_TYPES.MemberExpression)(node.callee) &&
-          ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.Identifier, {
-            name: "z",
-          })(node.callee.object) &&
+          isZodNamespace(node.callee.object, context) &&
           ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.Identifier, {
             name: "enum",
           })(node.callee.property)
         ) {
-          const variable = ASTUtils.findVariable(
-            context.sourceCode.getScope(node.callee),
-            "z",
-          );
-
-          const variableDefinition = variable?.defs[0];
-
           if (
-            variableDefinition?.type ===
-              TSESLint.Scope.DefinitionType.ImportBinding &&
-            isImportClause(variableDefinition.node)
+            ASTUtils.isNodeOfType(AST_NODE_TYPES.ArrayExpression)(
+              node.arguments[0],
+            )
           ) {
-            if (variableDefinition.node.parent.source?.value === "zod") {
+            const enumValues = new Set();
+
+            for (const element of node.arguments[0].elements) {
               if (
-                ASTUtils.isNodeOfType(AST_NODE_TYPES.ArrayExpression)(
-                  node.arguments[0],
-                )
+                element === null ||
+                !ASTUtils.isNodeOfType(AST_NODE_TYPES.Literal)(element)
               ) {
-                const enumValues = new Set();
+                return;
+              }
 
-                for (const element of node.arguments[0].elements) {
-                  if (
-                    element === null ||
-                    !ASTUtils.isNodeOfType(AST_NODE_TYPES.Literal)(element)
-                  ) {
-                    return;
-                  }
-
-                  if (enumValues.has(element.value)) {
-                    context.report({
-                      node: element,
-                      messageId: "duplicateValue",
-                      data: { value: element.value },
-                    });
-                  } else {
-                    enumValues.add(element.value);
-                  }
-                }
+              if (enumValues.has(element.value)) {
+                context.report({
+                  node: element,
+                  messageId: "duplicateValue",
+                  data: { value: element.value },
+                });
+              } else {
+                enumValues.add(element.value);
               }
             }
           }
