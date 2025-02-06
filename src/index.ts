@@ -1,19 +1,23 @@
-import type { TSESLint } from "@typescript-eslint/utils";
+import { TSESLint } from "@typescript-eslint/utils";
 
 import { recommended } from "./configs/recommended";
 import { PLUGIN_NAME, PLUGIN_VERSION } from "./constants";
 import { rules } from "./rules";
+import { PluginSettings } from "./utils/getPluginSettings";
 
 declare module "@typescript-eslint/utils/ts-eslint" {
   export interface SharedConfigurationSettings {
-    z?: {
-      /** @default "z" */
-      zodNamespace?: string;
-      /** @default "zod" */
-      zodImportSource?: string;
-    };
+    z?: Partial<PluginSettings>;
   }
 }
+
+// Omit `configs` from Plugin type to avoid index signature conflicts
+type Plugin = Omit<TSESLint.FlatConfig.Plugin, "configs"> & {
+  configs: {
+    recommended: TSESLint.FlatConfig.Config;
+    recommendedLegacy: TSESLint.ClassicConfig.Config;
+  };
+};
 
 const plugin = {
   /**
@@ -25,13 +29,17 @@ const plugin = {
     recommended: {
       ...recommended,
       plugins: {
-        get z(): TSESLint.FlatConfig.Plugin {
+        get z(): Plugin {
           return plugin;
         },
       },
     },
+    recommendedLegacy: {
+      ...recommended,
+      plugins: [PLUGIN_NAME],
+    },
   },
-} satisfies TSESLint.FlatConfig.Plugin;
+} satisfies Plugin;
 
 const { configs } = plugin;
 

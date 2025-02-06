@@ -5,6 +5,7 @@ import {
   type TSESTree,
 } from "@typescript-eslint/utils";
 
+import { getPluginSettings } from "./getPluginSettings";
 import { isImportClause } from "./isImportClause";
 
 /**
@@ -14,35 +15,43 @@ export const isZodNamespace = (
   node: TSESTree.Node,
   context: TSESLint.RuleContext<string, never[]>,
 ): node is TSESTree.Identifier => {
-  const zodNamespace = context.settings?.z?.zodNamespace ?? "z";
-  const zodImportSource = context.settings?.z?.zodImportSource ?? "zod";
+  const { zodNamespace, zodImportSource } = getPluginSettings(context.settings);
 
+  // Check if the node is an identifier with name `z` (zodNamespace)
   if (
-    // Node is an identifier with the name `z`
-    ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.Identifier, {
+    !ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.Identifier, {
       name: zodNamespace,
     })(node)
   ) {
-    const zVariable = ASTUtils.findVariable(
-      context.sourceCode.getScope(node),
-      node,
-    );
-
-    // Check if the `z` variable is an import binding
-    // https://eslint.org/docs/latest/extend/scope-manager-interface#node
-    const importBindingDefinition = zVariable?.defs.find(
-      (def) => def.type === TSESLint.Scope.DefinitionType.ImportBinding,
-    );
-
-    if (
-      isImportClause(importBindingDefinition?.node) &&
-      ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.ImportDeclaration, {
-        importKind: "value", // Is not a type import
-      })(importBindingDefinition.parent) &&
-      importBindingDefinition.parent.source.value === zodImportSource // Imported from the zod package
-    ) {
-      return true;
-    }
+    return false;
   }
-  return false;
+
+  // Find corresponding variable for the `z` identifier
+  const zVariable = ASTUtils.findVariable(
+    context.sourceCode.getScope(node),
+    node,
+  );
+
+  if (
+    zVariable === null ||
+    zVariable.scope.type !== TSESLint.Scope.ScopeType.module ||
+    zVariable.defs.length === 0
+  ) {
+    return false;
+  }
+
+  // Check if the `z` variable is an import binding
+  // https://eslint.org/docs/latest/extend/scope-manager-interface#node
+  const importBindingDefinition = zVariable.defs.find(
+    (def) => def.type === TSESLint.Scope.DefinitionType.ImportBinding,
+  );
+
+  return (
+    isImportClause(importBindingDefinition?.node) &&
+    ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.ImportDeclaration, {
+      importKind: "value", // Is not a type import
+    })(importBindingDefinition.parent) &&
+    ASTUtils.getStringIfConstant(importBindingDefinition.parent.source) ===
+      zodImportSource
+  );
 };
