@@ -1,6 +1,6 @@
 import { ESLintUtils } from "@typescript-eslint/utils";
 
-import { PLUGIN_REPOSITORY_URL, PLUGIN_VERSION } from "../../constants";
+import { PLUGIN_REPOSITORY_URL, PLUGIN_VERSION } from "../constants";
 
 export interface ZPluginDocs {
   description: string;

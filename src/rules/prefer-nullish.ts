@@ -1,7 +1,7 @@
 import { TSESTree } from "@typescript-eslint/utils";
 
-import { createRule } from "./utils/createRule";
-import { getNodeChain } from "./utils/getNodeChain";
+import { createRule } from "../utils/createRule";
+import { getNodeChain } from "../utils/getNodeChain";
 
 export default createRule({
   create(context) {

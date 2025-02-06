@@ -5,7 +5,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.useFlatConfig": true,
   "eslint.workingDirectories": [{ "mode": "auto" }],
-  "jest.jestCommandLine": "pnpm test --",
+  "jest.jestCommandLine": "pnpm test",
   "typescript.enablePromptUseWorkspaceTsdk": true, // Use the workspace TypeScript version
   "typescript.tsdk": "./node_modules/typescript/lib"
 }
