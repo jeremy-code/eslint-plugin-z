@@ -5,7 +5,8 @@ implemented as rules now or in the future.
 
 ## Use tuples over arrays for small sizes
 
-For slightly better type inference, use `z.tuple()` instead of `z.array()` at small sizes.
+For slightly better type inference, use `z.tuple()` instead of `z.array()` at
+small sizes.
 
 ```js
 // Instead of
@@ -22,7 +23,9 @@ type Schema = z.infer<typeof Schema>; // => [string, string, ...string[]]
 
 ## Use `z.output` in `ZodEffects`
 
-When using a `ZodEffects` schema with `transform`, `refine`, etc., you should use `z.output` to explicitly get the output type, which is the same as `z.infer`.
+When using a `ZodEffects` schema with `transform`, `refine`, etc., you should
+use `z.output` to explicitly get the output type, which is the same as
+`z.infer`.
 
 ```js
 // Instead of
@@ -40,7 +43,8 @@ type SchemaOutput = z.output<typeof Schema>; // => string[]
 
 ## Explicitly define unknown object keys behavior
 
-The default behavior of Zod is to strip unknown keys from object. To explicitly define the behavior, use `strip`, `strict`, `catchall`, or `passthrough`.
+The default behavior of Zod is to strip unknown keys from object. To explicitly
+define the behavior, use `strip`, `strict`, `catchall`, or `passthrough`.
 
 ```js
 // Instead of
@@ -115,7 +119,8 @@ z.preprocess((val) => new Date(val), z.date());
 
 # Merge discriminators
 
-For slightly faster evaluation, if you are merging multiple discriminated unions with the same discriminator key, you can merge the options directly.
+For slightly faster evaluation, if you are merging multiple discriminated unions
+with the same discriminator key, you can merge the options directly.
 
 ```js
 const A = z.discriminatedUnion("type", {
@@ -134,11 +139,13 @@ const AB = z.discriminatedUnion("type", [...A.options, ...B.options]);
 
 ## Use `.keyof` to parse object keys
 
-If you need to parse object keys, you can use `.keyof` to get the keys of the object as an enum schema.
+If you need to parse object keys, you can use `.keyof` to get the keys of the
+object as an enum schema.
 
 Note this only works as expected if the object schema is strictly defined.
 
-Also, you probably don't want to do this if you have already parsed/validated the object, or you'll incur an unnecessary performance cost.
+Also, you probably don't want to do this if you have already parsed/validated
+the object, or you'll incur an unnecessary performance cost.
 
 ```js
 const Schema = z.object({
@@ -156,7 +163,8 @@ Schema.keyof().parse(
 
 ## Use a consistent naming convention
 
-In general, the standard naming convention for Zod schemas is to simply use PascalCase.
+In general, the standard naming convention for Zod schemas is to simply use
+PascalCase.
 
 ```js
 const Name = z.string();
@@ -173,7 +181,9 @@ export type Name = z.infer<typeof nameSchema>;
 
 ## Avoid numerical keys in object or record schemas
 
-In general, it is best to avoid numerical keys in object or record schemas, as they can lead to unexpected behavior. Either use strings or use `z.map()` (`z.array(z.tuple([key, value]))` if you don't have access to Map objects).
+In general, it is best to avoid numerical keys in object or record schemas, as
+they can lead to unexpected behavior. Either use strings or use `z.map()`
+(`z.array(z.tuple([key, value]))` if you don't have access to Map objects).
 
 ```js
 const Schema = z.record(z.number(), z.string());

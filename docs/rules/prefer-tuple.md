@@ -1,6 +1,7 @@
 # prefer-tuple
 
-Enforce usage of `z.tuple([Schema])` instead of `z.array(Schema).length(1)` in Zod schemas.
+Enforce usage of `z.tuple([Schema])` instead of `z.array(Schema).length(1)` in
+Zod schemas.
 
 ## Rule Details
 
@@ -22,8 +23,8 @@ const Schema = z.array(z.string()).nonempty().length(1);
 type Schema = z.infer<typeof Schema>; // [string, ...string[]]
 ```
 
-Furthermore, `z.tuple([Schema])` is more readable and concise, and likely a better
-representation of your data.
+Furthermore, `z.tuple([Schema])` is more readable and concise, and likely a
+better representation of your data.
 
 Examples of **incorrect** code for this rule:
 

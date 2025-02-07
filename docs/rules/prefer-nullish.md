@@ -5,8 +5,8 @@ Enforce usage of `.nullish()` convenience method instead of chaining
 
 ## Rule Details
 
-This rule enforces usage of `.nullish()` convenience method instead of
-chaining `.nullable().optional()` or `optional().nullable()` in Zod schemas.
+This rule enforces usage of `.nullish()` convenience method instead of chaining
+`.nullable().optional()` or `optional().nullable()` in Zod schemas.
 
 Examples of **incorrect** code for this rule:
 
@@ -32,7 +32,9 @@ This rule has no options.
 
 ## When Not To Use It
 
-If you don't use the `Schema.nullable()` or `Schema.optional()` convenience methods and instead use `z.optional(Schema)` or `z.nullable(Schema)`, you can disable this rule.
+If you don't use the `Schema.nullable()` or `Schema.optional()` convenience
+methods and instead use `z.optional(Schema)` or `z.nullable(Schema)`, you can
+disable this rule.
 
 ```jsonc
 // eslint.config.mjs
