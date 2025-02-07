@@ -10,12 +10,12 @@ ruleTester.run("no-duplicate-enum-values", rule, {
     dedent`
       import { z } from "zod";
 
-      z.enum(["test1", "test2"])
+      const Schema = z.enum(["test1", "test2"])
     `,
     dedent`
       import z from "zod";
 
-      z.enum(["test1", "test2"])
+      const Schema = z.enum(["test1", "test2"])
     `,
   ],
   invalid: [
@@ -23,7 +23,7 @@ ruleTester.run("no-duplicate-enum-values", rule, {
       code: dedent`
         import { z } from "zod";
 
-        z.enum(["test1", "test1"])
+        const Schema = z.enum(["test1", "test1"])
       `,
       errors: [{ messageId: "duplicateValue", data: { value: "test1" } }],
     },

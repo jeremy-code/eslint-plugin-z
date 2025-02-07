@@ -1,41 +1,64 @@
-import { TSESTree } from "@typescript-eslint/utils";
+import { AST_NODE_TYPES, ASTUtils } from "@typescript-eslint/utils";
 
 import { createRule } from "../utils/createRule";
 import { getNodeChain } from "../utils/getNodeChain";
+import { isZodNamespace } from "../utils/isZodNamespace";
 
 export default createRule({
   create(context) {
     return {
-      ":matches(CallExpression[callee.object.callee.property.name='nullable'][callee.property.name='optional'], CallExpression[callee.object.callee.property.name='optional'][callee.property.name='nullable'])"(
-        node: TSESTree.CallExpression,
-      ) {
-        const chain = getNodeChain(node);
-        if (!chain || chain.length < 2) return;
-
-        let sequence: [TSESTree.Identifier, TSESTree.Identifier] | undefined;
-
-        for (let i = 0; i < chain.length - 1; i++) {
-          const [current, next] = [chain[i], chain[i + 1]];
+      CallExpression(node) {
+        // is of form method1().method2()
+        if (
+          // .optional() and .nullable() have no arguments as a convenience method
+          node.arguments.length === 0 &&
+          ASTUtils.isNodeOfType(AST_NODE_TYPES.MemberExpression)(node.callee) &&
+          ASTUtils.isIdentifier(node.callee.property) &&
+          ASTUtils.isNodeOfType(AST_NODE_TYPES.CallExpression)(
+            node.callee.object,
+          ) &&
+          node.callee.object.arguments.length === 0 &&
+          ASTUtils.isNodeOfType(AST_NODE_TYPES.MemberExpression)(
+            node.callee.object.callee,
+          ) &&
+          ASTUtils.isIdentifier(node.callee.object.callee.property)
+        ) {
+          // is of form .nullable().optional() or .optional().nullable()
           if (
-            (current?.name === "nullable" && next?.name === "optional") ||
-            (current?.name === "optional" && next?.name === "nullable")
+            (node.callee.property.name === "optional" &&
+              node.callee.object.callee.property.name === "nullable") ||
+            (node.callee.property.name === "nullable" &&
+              node.callee.object.callee.property.name === "optional")
           ) {
-            sequence = [current, next];
-            break;
+            const nodeChain = getNodeChain(node);
+
+            if (
+              nodeChain === null ||
+              nodeChain[0] === undefined ||
+              nodeChain.length <= 3 // Avoid z.optional(z.string()).nullable()
+            ) {
+              return;
+            }
+
+            if (isZodNamespace(nodeChain[0], context)) {
+              const [secondLast, last] = nodeChain.slice(-2);
+
+              if (secondLast === undefined || last === undefined) {
+                return;
+              }
+
+              return context.report({
+                node,
+                messageId: "useNullish",
+                fix: (fixer) =>
+                  fixer.replaceTextRange(
+                    [secondLast.range[0], last.range[1]],
+                    "nullish",
+                  ),
+              });
+            }
           }
         }
-
-        if (!sequence) return;
-
-        return context.report({
-          node,
-          messageId: "useNullish",
-          fix: (fixer) =>
-            fixer.replaceTextRange(
-              [sequence[0].range[0], sequence[1].range[1]],
-              "nullish",
-            ),
-        });
       },
     };
   },

@@ -10,7 +10,7 @@ ruleTester.run("prefer-tuple", rule, {
     dedent`
       import { z } from "zod";
 
-      const schema = z.tuple([z.string()]);
+      const Schema = z.tuple([z.string()]);
     `,
     dedent`
       const arrayLength = [1, 2, 3].length;
@@ -18,8 +18,8 @@ ruleTester.run("prefer-tuple", rule, {
     dedent`
       import { z } from "zod";
 
-      const schema = z.string();
-      const schemaArray = schema.array().length(1);
+      const Schema = z.string();
+      const SchemaArray = schema.array().length(1);
     `,
   ],
   invalid: [
@@ -27,7 +27,7 @@ ruleTester.run("prefer-tuple", rule, {
       code: dedent`
         import { z } from "zod";
 
-        const schema = z.array(z.string()).length(1);
+        const Schema = z.array(z.string()).length(1);
       `,
       errors: [{ messageId: "useTuple" }],
     },
@@ -35,7 +35,7 @@ ruleTester.run("prefer-tuple", rule, {
       code: dedent`
         import { z } from "zod";
 
-        const schema = z.string().array().length(1);
+        const Schema = z.string().array().length(1);
       `,
       errors: [
         {
@@ -47,8 +47,8 @@ ruleTester.run("prefer-tuple", rule, {
       code: dedent`
         import { z } from "zod";
 
-        const schema = z.string();
-        const schemaArray = z.array(schema).length(1);
+        const Schema = z.string();
+        const SchemaArray = z.array(schema).length(1);
       `,
       errors: [{ messageId: "useTuple" }],
     },
@@ -56,7 +56,7 @@ ruleTester.run("prefer-tuple", rule, {
       code: dedent`
         import { z } from "zod";
 
-        const schema = z.string().array().nonempty().min(1).max(1).length(1);
+        const Schema = z.string().array().nonempty().min(1).max(1).length(1);
       `,
       errors: [{ messageId: "useTuple" }],
     },

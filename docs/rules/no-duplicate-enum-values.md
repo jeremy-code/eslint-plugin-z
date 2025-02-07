@@ -1,30 +1,32 @@
 # no-duplicate-enum-values
 
-This rule checks for duplicate values in Zod enums. In runtime, Zod will NOT throw an error if there are duplicate values in an enum schema.
+This rule checks for duplicate values in Zod enums. In runtime, Zod will _NOT_
+throw an error if there are duplicate values in an enum schema.
 
 However, there will be unexpected behavior such as:
 
 ```js
 import { z } from "zod";
 
-const aEnum = z.enum(["a", "a", "a"]);
+const Schema = z.enum(["a", "a", "a"]);
 
-aEnum.enum; // => { a: 'a' }
-aEnum.options; // => ['a', 'a', 'a']
-aEnum.extract(["a"]).options; // => ['a']
-aEnum.exclude(["a"]).options; // => []
+Schema.enum; // => { a: 'a' }
+Schema.options; // => ['a', 'a', 'a']
+Schema.extract(["a"]).options; // => ['a']
+Schema.exclude(["a"]).options; // => []
 ```
 
 ## Rule Details
 
-This rule checks all literal array values in enum schema (e.g. `z.enum([...])`). It will not check variables or expressions.
+This rule checks all literal array values in enum schema (e.g. `z.enum([...])`).
+It will not check variables or expressions.
 
 Examples of **incorrect** code for this rule:
 
 ```ts
 import { z } from "zod";
 
-const aEnum = z.enum(["a", "a", "a"]);
+const Schema = z.enum(["a", "a", "a"]);
 ```
 
 Examples of **correct** code for this rule:
@@ -32,7 +34,7 @@ Examples of **correct** code for this rule:
 ```ts
 import { z } from "zod";
 
-const abcEnum = z.enum(["a", "b", "c"]);
+const Schema = z.enum(["a", "b", "c"]);
 ```
 
 ## Options
@@ -41,7 +43,8 @@ This rule has no options.
 
 ## When Not To Use It
 
-If you don't use Zod enums, you can disable this rule.
+If you don't use Zod enums or use `.options` or `.enum` properties, you can
+disable this rule.
 
 ```jsonc
 // eslint.config.mjs
