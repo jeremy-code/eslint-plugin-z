@@ -4,6 +4,8 @@ import { createRule } from "../utils/createRule";
 import { getNodeChain } from "../utils/getNodeChain";
 import { isZodNamespace } from "../utils/isZodNamespace";
 
+const unUsedVar = 1;
+
 export default createRule({
   create(context) {
     return {
