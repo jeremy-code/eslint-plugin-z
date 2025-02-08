@@ -58,7 +58,9 @@ jobs:
         uses: changesets/action@v1
         continue-on-error: true
         with:
-          publish: pnpm publish --access public
+          publish: |
+            pnpm publish --access public
+            pnpm exec changeset tag
           version: pnpm exec changeset version
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
@@ -69,8 +71,9 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Print Changesets output
-        run: echo "${{ steps.changesets.outputs }}"
+        run: echo "${{ steps.changesets.outputs.published }} ${{ steps.changesets.outputs.publishedPackages }} ${{ steps.changesets.outputs.hasChangesets }} ${{ steps.changesets.outputs.pullRequestNumber }}"
 
       - name: Push Git tag after publishing
+        # https://github.com/changesets/changesets/blob/main/docs/command-line-options.md#git-tags
         if: steps.changesets.outputs.published == 'true'
         run: git push --follow-tags
