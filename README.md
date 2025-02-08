@@ -13,7 +13,7 @@
 > [!CAUTION]
 > This project is in the early stages of development. Please report any issues you encounter.
 
-An [ESLint](https://eslint.org/) plugin for linting [zod](https://zod.dev/) schemas.
+An [ESLint](https://eslint.org/ "Find and fix problems in your JavaScript code - ESLint - Pluggable JavaScript Linter") plugin for linting [zod](https://zod.dev/ "TypeScript-first schema validation with static type inference - Zod") schemas.
 
 ## Installation
 
