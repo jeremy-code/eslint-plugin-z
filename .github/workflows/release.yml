@@ -9,8 +9,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  version:
-    timeout-minutes: 15
+  release:
+    name: Release
     runs-on: ubuntu-latest
     permissions:
       attestations: write
