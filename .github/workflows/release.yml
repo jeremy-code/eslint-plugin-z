@@ -15,7 +15,7 @@ jobs:
     permissions:
       attestations: write
       id-token: write
-      contents: read
+      contents: write
       pull-requests: write
     steps:
       - name: Check out Git repository
