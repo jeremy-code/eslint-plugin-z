@@ -71,9 +71,8 @@ jobs:
       - name: Print Changesets output
         run: echo "${{ steps.changesets.outputs.published }} ${{ steps.changesets.outputs.publishedPackages }} ${{ steps.changesets.outputs.hasChangesets }} ${{ steps.changesets.outputs.pullRequestNumber }}"
 
-      - name: Push Git tag after publishing
+      - name: Push GitHub tags
         # https://github.com/changesets/changesets/blob/main/docs/command-line-options.md#git-tags
-        if: steps.changesets.outputs.published == 'true'
         run: |
           pnpm exec changeset tag
           git push --follow-tags
