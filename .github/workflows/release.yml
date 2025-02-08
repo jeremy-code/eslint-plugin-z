@@ -58,7 +58,7 @@ jobs:
         uses: changesets/action@v1
         continue-on-error: true
         with:
-          publish: pnpm publish --access public && pnpm exec changeset tag
+          publish: pnpm publish --access public
           version: pnpm exec changeset version
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
@@ -74,4 +74,6 @@ jobs:
       - name: Push Git tag after publishing
         # https://github.com/changesets/changesets/blob/main/docs/command-line-options.md#git-tags
         if: steps.changesets.outputs.published == 'true'
-        run: git push --follow-tags
+        run: |
+          pnpm exec changeset tag
+          git push --follow-tags
