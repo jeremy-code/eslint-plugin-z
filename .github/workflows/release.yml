@@ -31,6 +31,8 @@ jobs:
           # Fetch all history for all branches and tags so that Changesets can
           # compare against the correct base branch
           fetch-depth: 0
+          fetch-tags: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Enable Corepack
         run: |
