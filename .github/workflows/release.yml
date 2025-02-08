@@ -4,8 +4,6 @@ on:
   push:
     branches: ["main"]
     paths-ignore: ["docs/**"]
-  pull_request:
-    types: [opened, synchronize]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,13 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       attestations: write
-      deployments: write
-      packages: write
       id-token: write
-      statuses: read
-      checks: write
-      actions: write
-      contents: write
+      contents: read
       pull-requests: write
     steps:
       - name: Check out Git repository
@@ -31,8 +24,6 @@ jobs:
           # Fetch all history for all branches and tags so that Changesets can
           # compare against the correct base branch
           fetch-depth: 0
-          fetch-tags: true
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Enable Corepack
         run: |
@@ -41,11 +32,18 @@ jobs:
 
       - name: Set up Node.js environment
         uses: actions/setup-node@v4
+        id: setup-node
         with:
           node-version-file: .nvmrc
           cache: pnpm
-          cache-dependency-path: "pnpm-lock.yaml"
-          registry-url: "https://registry.npmjs.org"
+          cache-dependency-path: pnpm-lock.yaml
+          registry-url: https://registry.npmjs.org
+
+      - name: Update `.npmrc` file
+        run: |
+          cat << EOF > $NPM_CONFIG_USERCONFIG
+            provenance=true
+          EOF
 
       - name: Install dependencies
         run: pnpm install
@@ -53,26 +51,13 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Create Release Pull Request or Publish to NPM
-        id: changesets
+      - name: Create pull request for version bump and publish to npm
         uses: changesets/action@v1
-        continue-on-error: true
         with:
-          publish: pnpm changeset publish
+          publish: pnpm exec changeset publish
           version: pnpm exec changeset version
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
-          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Print Changesets output
-        run: echo "${{ steps.changesets.outputs.published }} ${{ steps.changesets.outputs.publishedPackages }} ${{ steps.changesets.outputs.hasChangesets }} ${{ steps.changesets.outputs.pullRequestNumber }}"
-
-      - name: Push GitHub tags
-        # https://github.com/changesets/changesets/blob/main/docs/command-line-options.md#git-tags
-        run: |
-          pnpm exec changeset tag
-          git push --follow-tags

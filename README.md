@@ -1,5 +1,7 @@
 # eslint-plugin-z
 
+<!-- Link references -->
+
 [npm-package]: https://www.npmjs.com/package/eslint-plugin-z
 [license-badge]: https://img.shields.io/github/license/jeremy-code/eslint-plugin-z
 [npm-version-badge]: https://img.shields.io/npm/v/eslint-plugin-z

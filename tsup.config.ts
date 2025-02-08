@@ -4,7 +4,6 @@ export default defineConfig((overrideOptions) => ({
   name: "eslint-plugin-z",
   entry: ["src/index.ts"],
   target: "node18",
-  // minify: true,
   format: ["esm", "cjs"],
   dts: true,
   external: ["@typescript-eslint/utils"],
