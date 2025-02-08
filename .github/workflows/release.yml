@@ -41,7 +41,7 @@ jobs:
 
       - name: Update `.npmrc` file
         run: |
-          cat << EOF > $NPM_CONFIG_USERCONFIG
+          cat << EOF >> "./.npmrc"
             provenance=true
           EOF
 
