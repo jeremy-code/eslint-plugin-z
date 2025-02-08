@@ -4,6 +4,7 @@ import {
   AST_NODE_TYPES,
   TSESTree,
 } from "@typescript-eslint/typescript-estree";
+import { ASTUtils } from "@typescript-eslint/utils";
 
 import { getNodeChain } from "../getNodeChain";
 
@@ -13,16 +14,15 @@ const getStatementExpression = (code: string): TSESTree.Expression => {
 
   if (programStatement === undefined) {
     throw new Error("Invalid test input: No statements found.");
+  } else if (
+    !ASTUtils.isNodeOfType(AST_NODE_TYPES.ExpressionStatement)(programStatement)
+  ) {
+    throw new Error(
+      `Invalid test input: Expected an Expression Statement, got ${programStatement.type}`,
+    );
   }
 
-  switch (programStatement.type) {
-    case AST_NODE_TYPES.ExpressionStatement:
-      return programStatement.expression;
-    default:
-      throw new Error(
-        `Invalid test input: Expected an Expression Statement, got ${programStatement.type}`,
-      );
-  }
+  return programStatement.expression;
 };
 
 describe("getNodeChain", () => {
@@ -69,6 +69,22 @@ describe("getNodeChain", () => {
       expect.objectContaining({ name: "obj", type: "Identifier" }),
       expect.objectContaining({ name: "method1", type: "Identifier" }),
       expect.objectContaining({ name: "method2", type: "Identifier" }),
+    ]);
+  });
+
+  test("handle optional chaining", () => {
+    const node = getStatementExpression("obj?.prop;");
+    expect(getNodeChain(node)).toEqual([
+      expect.objectContaining({ name: "obj", type: "Identifier" }),
+      expect.objectContaining({ name: "prop", type: "Identifier" }),
+    ]);
+  });
+
+  test("handle optional chaining with CallExpression", () => {
+    const node = getStatementExpression("obj?.method();");
+    expect(getNodeChain(node)).toEqual([
+      expect.objectContaining({ name: "obj", type: "Identifier" }),
+      expect.objectContaining({ name: "method", type: "Identifier" }),
     ]);
   });
 

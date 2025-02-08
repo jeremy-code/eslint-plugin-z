@@ -2,12 +2,21 @@ import { TSESLint } from "@typescript-eslint/utils";
 
 // Settings equivalent to reactNamespace ("React"), jsxImportSource from
 // tsconfig.json ("react")
-export type PluginSettings = {
-  /** @default "z" */
+export interface PluginSettings {
+  /**
+   * Specify the object called from `zod` package that contains all the exported
+   * schemas.
+   *
+   * @defaultValue `"z" `
+   */
   zodNamespace: string;
-  /** @default "zod" */
+  /**
+   * Specify the import source of the `zod` package.
+   *
+   * @defaultValue `"zod"`
+   */
   zodImportSource: string;
-};
+}
 
 const DEFAULT_PLUGIN_SETTINGS: PluginSettings = {
   zodNamespace: "z",

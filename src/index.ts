@@ -1,3 +1,9 @@
+/**
+ * An ESLint plugin for linting Zod schemas.
+ *
+ * @packageDocumentation
+ */
+
 import { TSESLint } from "@typescript-eslint/utils";
 
 import { recommended } from "./configs/recommended";
