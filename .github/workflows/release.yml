@@ -67,6 +67,9 @@ jobs:
           NPM_CONFIG_PROVENANCE: true
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Print Changesets output
+        run: echo "${{ steps.changesets.outputs }}"
+
       - name: Push Git tag after publishing
         if: steps.changesets.outputs.published == 'true'
         run: git push --follow-tags
