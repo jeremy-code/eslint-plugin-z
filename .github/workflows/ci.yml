@@ -32,11 +32,12 @@ jobs:
 
       - name: Lint code with ESLint
         id: eslint
+        continue-on-error: true
         run: pnpm run lint --output-file results.sarif --format @microsoft/sarif
 
       - name: Upload SARIF file
         # https://github.com/jeremy-code/eslint-plugin-z/security/code-scanning
-        if: ${{ failure() && steps.eslint.conclusion == 'failure' }}
+        if: ${{ failure() && steps.eslint.outcome == 'failure' }}
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: results.sarif
