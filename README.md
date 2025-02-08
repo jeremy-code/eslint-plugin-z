@@ -7,7 +7,7 @@
 
 [![GitHub Actions](../../actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
 [![License][license-badge]](LICENSE)
-[![NPM version][npm-version-badge]][NPM package]
+[![NPM version][npm-version-badge]][npm-package]
 [![GitHub release][github-release-badge]](../../actions/workflows/ci.yml)
 
 > [!CAUTION]
