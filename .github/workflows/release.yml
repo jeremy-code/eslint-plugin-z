@@ -58,7 +58,7 @@ jobs:
         uses: changesets/action@v1
         continue-on-error: true
         with:
-          publish: pnpm publish --access public
+          publish: pnpm changeset publish
           version: pnpm exec changeset version
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
