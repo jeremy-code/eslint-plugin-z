@@ -5,8 +5,8 @@ import {
   type TSESTree,
 } from "@typescript-eslint/utils";
 
+import { isImportClause } from "./ast/isImportClause";
 import { getPluginSettings } from "./getPluginSettings";
-import { isImportClause } from "./isImportClause";
 
 /**
  * Check if the given node is the `z` object or the `zod` namespace.

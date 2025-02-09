@@ -7,7 +7,7 @@
 import { TSESLint } from "@typescript-eslint/utils";
 
 import { recommended } from "./configs/recommended";
-import { PLUGIN_NAME, PLUGIN_VERSION } from "./constants";
+import { PLUGIN_NAME, PLUGIN_NAMESPACE, PLUGIN_VERSION } from "./constants";
 import { rules } from "./rules";
 import { PluginSettings } from "./utils/getPluginSettings";
 
@@ -35,7 +35,7 @@ const plugin = {
     recommended: {
       ...recommended,
       plugins: {
-        get z(): Plugin {
+        get [PLUGIN_NAMESPACE](): Plugin {
           return plugin;
         },
       },

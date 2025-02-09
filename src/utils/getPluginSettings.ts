@@ -7,7 +7,7 @@ export interface PluginSettings {
    * Specify the object called from `zod` package that contains all the exported
    * schemas.
    *
-   * @defaultValue `"z" `
+   * @defaultValue `"z"`
    */
   zodNamespace: string;
   /**

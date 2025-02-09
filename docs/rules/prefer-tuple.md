@@ -51,17 +51,17 @@ This rule has no options.
 If you need any of the array methods (e.g. `.nonempty()`, `.min()`, `.max()`,
 `.length()`, `.element()`), you may want to ignore this rule.
 
-```jsonc
+```js
 // eslint.config.mjs
 
 export default [
   // ...
   {
     rules: {
-      "z/prefer-tuple": "off"
-    }
-  }
-]
+      "z/prefer-tuple": "off",
+    },
+  },
+];
 ```
 
 ## Further Reading

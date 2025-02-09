@@ -1,7 +1,7 @@
 import { AST_NODE_TYPES, ASTUtils } from "@typescript-eslint/utils";
 
+import { getNodeChain } from "../utils/ast/getNodeChain";
 import { createRule } from "../utils/createRule";
-import { getNodeChain } from "../utils/getNodeChain";
 import { isZodNamespace } from "../utils/isZodNamespace";
 
 export default createRule({

@@ -1,5 +1,6 @@
 import { AST_NODE_TYPES, ASTUtils } from "@typescript-eslint/utils";
 
+import { isStringLiteral } from "../utils/ast/isStringLiteral";
 import { createRule } from "../utils/createRule";
 import { isZodNamespace } from "../utils/isZodNamespace";
 
@@ -19,26 +20,20 @@ export default createRule({
               node.arguments[0],
             )
           ) {
-            const enumValues = new Set();
-
-            for (const element of node.arguments[0].elements) {
-              if (
-                element === null ||
-                !ASTUtils.isNodeOfType(AST_NODE_TYPES.Literal)(element)
-              ) {
-                return;
+            node.arguments[0].elements.reduce((acc, element) => {
+              if (isStringLiteral(element)) {
+                if (acc.has(element.value)) {
+                  context.report({
+                    node: element,
+                    messageId: "duplicateValue",
+                    data: { value: element.value },
+                  });
+                } else {
+                  acc.add(element.value);
+                }
               }
-
-              if (enumValues.has(element.value)) {
-                context.report({
-                  node: element,
-                  messageId: "duplicateValue",
-                  data: { value: element.value },
-                });
-              } else {
-                enumValues.add(element.value);
-              }
-            }
+              return acc;
+            }, new Set<string>());
           }
         }
       },

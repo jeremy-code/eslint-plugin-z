@@ -1,11 +1,11 @@
 import { RuleTester } from "@typescript-eslint/rule-tester";
 import dedent from "dedent";
 
-import rule from "./no-throw-refine";
+import rule from "./no-throw-in-refine";
 
 const ruleTester = new RuleTester();
 
-ruleTester.run("no-throw-refine", rule, {
+ruleTester.run("no-throw-in-refine", rule, {
   valid: [
     dedent`
       import { z } from "zod";
@@ -27,7 +27,7 @@ ruleTester.run("no-throw-refine", rule, {
           throw new Error("test")
         })
       `,
-      errors: [{ messageId: "noThrowRefine" }],
+      errors: [{ messageId: "noThrowInRefine" }],
     },
     {
       code: dedent`
@@ -40,7 +40,7 @@ ruleTester.run("no-throw-refine", rule, {
           path: ["test"],
         })
       `,
-      errors: [{ messageId: "noThrowRefine" }],
+      errors: [{ messageId: "noThrowInRefine" }],
     },
   ],
 });

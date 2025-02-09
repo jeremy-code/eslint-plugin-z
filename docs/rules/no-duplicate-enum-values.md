@@ -46,17 +46,17 @@ This rule has no options.
 If you don't use Zod enums or use `.options` or `.enum` properties, you can
 disable this rule.
 
-```jsonc
+```js
 // eslint.config.mjs
 
 export default [
   // ...
   {
     rules: {
-      "z/no-duplicate-enum-values": "off"
-    }
-  }
-]
+      "z/no-duplicate-enum-values": "off",
+    },
+  },
+];
 ```
 
 ## Further Reading

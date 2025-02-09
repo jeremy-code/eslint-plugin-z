@@ -1,9 +1,10 @@
 import { AST_NODE_TYPES, ASTUtils } from "@typescript-eslint/utils";
 
+import { isExpression } from "../utils/ast/isExpression";
+import { isUndefinedIdentifier } from "../utils/ast/isUndefinedIdentifier";
 import { createRule } from "../utils/createRule";
+import { isBetween } from "../utils/helpers/isBetween";
 import { isCustomErrorParams } from "../utils/isCustomErrorParams";
-import { isExpression } from "../utils/isExpression";
-import { isUndefinedIdentifier } from "../utils/isUndefinedIdentifier";
 
 export default createRule({
   create(context) {
@@ -14,7 +15,7 @@ export default createRule({
           ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.Identifier, {
             name: "refine",
           })(node.callee.property) &&
-          node.arguments.length <= 2 &&
+          isBetween(node.arguments.length, [1, 2]) &&
           ASTUtils.isFunction(node.arguments[0]) &&
           (isCustomErrorParams(node.arguments[1]) ||
             ASTUtils.isFunction(node.arguments[1]) ||
@@ -36,12 +37,12 @@ export default createRule({
             return;
           }
 
-          for (const throwStatement of throwStatements) {
+          throwStatements.forEach((throwStatement) => {
             context.report({
               node: throwStatement,
-              messageId: "noThrowRefine",
+              messageId: "noThrowInRefine",
             });
-          }
+          });
         }
       },
     };
@@ -55,9 +56,9 @@ export default createRule({
     },
     schema: [],
     messages: {
-      noThrowRefine: "Do not throw errors in a refine method.",
+      noThrowInRefine: "Do not throw errors in a refine method.",
     },
   },
-  name: "no-throw-refine",
+  name: "no-throw-in-refine",
   defaultOptions: [],
 });

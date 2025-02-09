@@ -36,17 +36,17 @@ If you don't use the `Schema.nullable()` or `Schema.optional()` convenience
 methods and instead use `z.optional(Schema)` or `z.nullable(Schema)`, you can
 disable this rule.
 
-```jsonc
+```js
 // eslint.config.mjs
 
 export default [
   // ...
   {
     rules: {
-      "z/prefer-nullish": "off"
-    }
-  }
-]
+      "z/prefer-nullish": "off",
+    },
+  },
+];
 ```
 
 ## Further Reading

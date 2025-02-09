@@ -4,7 +4,7 @@ import {
   type TSESTree,
 } from "@typescript-eslint/utils";
 
-import { isUndefinedIdentifier } from "./isUndefinedIdentifier";
+import { isUndefinedIdentifier } from "./ast/isUndefinedIdentifier";
 
 /**
  *  type CustomErrorParams = {
@@ -20,8 +20,10 @@ import { isUndefinedIdentifier } from "./isUndefinedIdentifier";
  */
 export const isCustomErrorParams = (
   node: TSESTree.Node | null | undefined,
-): boolean => {
-  if (isUndefinedIdentifier(node)) return true;
+): node is TSESTree.ObjectExpression | TSESTree.Identifier => {
+  if (isUndefinedIdentifier(node)) {
+    return true;
+  }
 
   if (
     !ASTUtils.isNodeOfType(AST_NODE_TYPES.ObjectExpression)(node) ||
@@ -38,6 +40,11 @@ export const isCustomErrorParams = (
 const isValidCustomErrorParamsProperty = (
   property: TSESTree.ObjectLiteralElement,
 ): boolean => {
+  // TODO: Check if the element being spread has the correct properties
+  if (ASTUtils.isNodeOfType(AST_NODE_TYPES.SpreadElement)(property)) {
+    return true;
+  }
+
   if (
     !ASTUtils.isNodeOfType(AST_NODE_TYPES.Property)(property) ||
     !ASTUtils.isIdentifier(property.key)

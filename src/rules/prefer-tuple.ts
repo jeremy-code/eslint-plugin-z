@@ -1,7 +1,8 @@
 import { AST_NODE_TYPES, ASTUtils } from "@typescript-eslint/utils";
 
+import { getNodeChain } from "../utils/ast/getNodeChain";
 import { createRule } from "../utils/createRule";
-import { getNodeChain } from "../utils/getNodeChain";
+import { isBetween } from "../utils/helpers/isBetween";
 import { isZodNamespace } from "../utils/isZodNamespace";
 
 const ARRAY_METHODS = ["min", "max", "length", "nonempty"];
@@ -15,7 +16,7 @@ export default createRule({
           ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.Identifier, {
             name: "length",
           })(node.callee.property) &&
-          [1, 2].includes(node.arguments.length) && // z.array().length() either has 1 or 2 arguments (1 for length, 2 for length and message)
+          isBetween(node.arguments.length, [1, 2]) && // z.array().length() has 1 or 2 arguments
           ASTUtils.isNodeOfTypeWithConditions(AST_NODE_TYPES.Literal, {
             value: 1, // z.array().length(1)
           })(node.arguments[0])

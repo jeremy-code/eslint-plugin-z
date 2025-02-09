@@ -53,7 +53,8 @@ export default [pluginZ.configs.recommended];
 | Rules | Description | ✅ | Type | 🔧 | ❌ |
 |---|---|---|---|---|---|
 | [no-duplicate-enum-values](./docs/rules/no-duplicate-enum-values.md) | Disallow duplicate enum member values. | ✅ | ⚠️ |  |  |
-| [no-throw-refine](./docs/rules/no-throw-refine.md) | Ban throwing in refinement function. | ✅ | ⚠️ |  |  |
+| [no-throw-in-refine](./docs/rules/no-throw-in-refine.md) | Ban throwing in refinement function. | ✅ | ⚠️ |  |  |
+| [prefer-enum](./docs/rules/prefer-enum.md) | Enforce usage of `z.enum()` instead of `z.union([z.literal(""),...])` | ✅ | 💡 | 🔧 |  |
 | [prefer-nullish](./docs/rules/prefer-nullish.md) | Enforce usage of `z.nullish()` instead of `z.null().optional()` or `z.optional().null()`. | ✅ | 💡 | 🔧 |  |
 | [prefer-tuple](./docs/rules/prefer-tuple.md) | Enforce usage of `z.tuple([z.schema()])` instead of `z.schema().array().length(1)` | ✅ | 💡 |  |  |
 
