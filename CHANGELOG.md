@@ -1,5 +1,13 @@
 # eslint-plugin-z
 
+## 0.1.2
+
+### Patch Changes
+
+- [`3099519`](https://github.com/jeremy-code/eslint-plugin-z/commit/309951990c09ddb7aa4d1bbde4f1eb0c8e17f8fc) Thanks [@jeremy-code](https://github.com/jeremy-code)! - # chore: add `prefer-enum` rule, add plugin namespace, refactor utils
+
+  This release adds a new rule, `prefer-enum`, which enforces the usage of `z.enum(["a", "b", "c"])` instead of `z.union([z.literal("a"), z.literal("b"), z.literal("c")])` in Zod schemas.
+
 ## 0.1.1
 
 ### Patch Changes
