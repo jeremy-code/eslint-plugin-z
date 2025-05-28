@@ -1,5 +1,11 @@
 # eslint-plugin-z
 
+## 0.1.4
+
+### Patch Changes
+
+- [#18](https://github.com/jeremy-code/eslint-plugin-z/pull/18) [`d266bd4`](https://github.com/jeremy-code/eslint-plugin-z/commit/d266bd427df2d6aff4e5d408c5a9cf8719e0e431) Thanks [@jeremy-code](https://github.com/jeremy-code)! - update deps, README.md, add pnpm-workspace.yaml, update eslint.config.mjs
+
 ## 0.1.2
 
 ### Patch Changes
