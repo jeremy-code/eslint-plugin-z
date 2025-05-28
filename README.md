@@ -15,9 +15,6 @@
 [![NPM version][npm-version-badge]][npm-package]
 [![GitHub release][github-release-badge]][github-release]
 
-> [!CAUTION]
-> This project is in the early stages of development. Please report any issues you encounter.
-
 An [ESLint](https://eslint.org/ "Find and fix problems in your JavaScript code - ESLint") plugin for linting [Zod](https://zod.dev/ "TypeScript-first schema validation with static type inference - Zod") schemas.
 
 ## Installation
@@ -44,19 +41,19 @@ export default [pluginZ.configs.recommended];
 
 ## Rules
 
-- ✅ ️Set in the recommended configuration.
-- 🖼️ Layout, ⚠️ problem, 💡 Suggestion
-- 🔧 Automatically fixable by the `--fix` CLI option.
-- ❌ Deprecated.
+- 💼 Configurations enabled in
+- ⚠️ Configurations set to warn in
+- ✅ ️Set in the `recommended` configuration
+- 🔧 Automatically fixable by the `--fix` CLI option
 
 <!-- prettier-ignore -->
-| Rules | Description | ✅ | Type | 🔧 | ❌ |
-|---|---|---|---|---|---|
-| [no-duplicate-enum-values](./docs/rules/no-duplicate-enum-values.md) | Disallow duplicate enum member values. | ✅ | ⚠️ |  |  |
-| [no-throw-in-refine](./docs/rules/no-throw-in-refine.md) | Ban throwing in refinement function. | ✅ | ⚠️ |  |  |
-| [prefer-enum](./docs/rules/prefer-enum.md) | Enforce usage of `z.enum()` instead of `z.union([z.literal(""),...])` | ✅ | 💡 | 🔧 |  |
-| [prefer-nullish](./docs/rules/prefer-nullish.md) | Enforce usage of `z.nullish()` instead of `z.null().optional()` or `z.optional().null()`. | ✅ | 💡 | 🔧 |  |
-| [prefer-tuple](./docs/rules/prefer-tuple.md) | Enforce usage of `z.tuple([z.schema()])` instead of `z.schema().array().length(1)` | ✅ | 💡 |  |  |
+| Name | Description | 💼 | ⚠️ | 🔧 |
+|---|---|---|---|---|
+| [no-duplicate-enum-values](./docs/rules/no-duplicate-enum-values.md)| Disallow duplicate enum member values | ✅ |  | 🔧 |
+| [no-throw-in-refine](./docs/rules/no-throw-in-refine.md) | Ban throwing in refinement function | ✅ |  |  |
+| [prefer-enum](./docs/rules/prefer-enum.md) | Enforce usage of `z.enum()` instead of `z.union([z.literal(""),...])` |  | ⚠️ | 🔧 |
+| [prefer-nullish](./docs/rules/prefer-nullish.md) | Enforce usage of `z.nullish()` instead of `z.null().optional()` or `z.optional().null()` | ✅ | ⚠️ | 🔧 |
+| [prefer-tuple](./docs/rules/prefer-tuple.md) | Enforce usage of `z.tuple([z.schema()])` instead of `z.schema().array().length(1)` | ✅ | ⚠️ | 🔧 |
 
 <!-- prettier-ignore-end -->
 
