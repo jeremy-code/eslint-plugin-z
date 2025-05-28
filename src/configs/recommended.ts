@@ -1,19 +1,19 @@
 import type { TSESLint } from "@typescript-eslint/utils";
 
 import { PLUGIN_NAMESPACE } from "../constants";
-import type { rules } from "../rules";
+import type { Rule } from "../rules";
 
 const recommendedRules = {
-  // problems
+  // Problems
   "z/no-duplicate-enum-values": "error",
   "z/no-throw-in-refine": "error",
 
-  // suggestions
+  // Suggestions
   "z/prefer-enum": "warn",
   "z/prefer-nullish": "warn",
   "z/prefer-tuple": "warn",
 } satisfies Record<
-  `${typeof PLUGIN_NAMESPACE}/${keyof typeof rules}`,
+  `${typeof PLUGIN_NAMESPACE}/${Rule}`,
   TSESLint.SharedConfig.RuleEntry
 >;
 

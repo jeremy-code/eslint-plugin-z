@@ -17,3 +17,5 @@ export const rules = {
   "prefer-nullish": preferNullish,
   "prefer-tuple": preferTuple,
 } satisfies Record<string, TSESLint.RuleModule<string, [], ZPluginDocs>>;
+
+export type Rule = keyof typeof rules;
