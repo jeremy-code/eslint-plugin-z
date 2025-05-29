@@ -1,5 +1,11 @@
 # eslint-plugin-z
 
+## 0.2.1
+
+### Patch Changes
+
+- [`84178a7`](https://github.com/jeremy-code/eslint-plugin-z/commit/84178a7ddb0e859d0ba48b5952a7426bdd4deedf) Thanks [@jeremy-code](https://github.com/jeremy-code)! - add rule prefer-nonempty
+
 ## 0.2.0
 
 ### Minor Changes
