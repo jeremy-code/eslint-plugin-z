@@ -10,6 +10,7 @@ const recommendedRules = {
 
   // Suggestions
   "z/prefer-enum": "warn",
+  "z/prefer-nonempty": "warn",
   "z/prefer-nullish": "warn",
   "z/prefer-tuple": "warn",
 } satisfies Record<

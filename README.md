@@ -53,6 +53,7 @@ export default [pluginZ.configs.recommended];
 | [no-throw-in-refine](./docs/rules/no-throw-in-refine.md) | Ban throwing in refinement function | ✅ |  |  |
 | [no-undefined-argument-in-custom](./docs/rules/no-undefined-argument-in-custom.md) | Disallow undefined argument in `z.custom()` | ✅ |  | 🔧 |
 | [prefer-enum](./docs/rules/prefer-enum.md) | Enforce usage of `z.enum()` instead of `z.union([z.literal(""),...])` |  | ⚠️ | 🔧 |
+| [prefer-nonempty](./docs/rules/prefer-nonempty.md) | Enforce usage of `z.string().array().nonempty()` instead of `z.string().array().min(1)` or `z.array().nonempty()` instead of `z.array().min(1)` | ✅ | ⚠️ | 🔧 |
 | [prefer-nullish](./docs/rules/prefer-nullish.md) | Enforce usage of `z.nullish()` instead of `z.null().optional()` or `z.optional().null()` | ✅ | ⚠️ | 🔧 |
 | [prefer-tuple](./docs/rules/prefer-tuple.md) | Enforce usage of `z.tuple([z.schema()])` instead of `z.schema().array().length(1)` | ✅ | ⚠️ | 🔧 |
 
