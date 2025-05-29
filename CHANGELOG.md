@@ -1,5 +1,11 @@
 # eslint-plugin-z
 
+## 0.2.0
+
+### Minor Changes
+
+- [`f0e15fc`](https://github.com/jeremy-code/eslint-plugin-z/commit/f0e15fcd7bf92444ba01adefd8fdbbec5ceefbc0) Thanks [@jeremy-code](https://github.com/jeremy-code)! - add no-undefined-argument-in-custom-rule, constant plugin export, misc. changes to docs
+
 ## 0.1.4
 
 ### Patch Changes
