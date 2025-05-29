@@ -4,8 +4,6 @@
  * @packageDocumentation
  */
 
-import { TSESLint } from "@typescript-eslint/utils";
-
 import { recommended } from "./configs/recommended";
 import { PLUGIN_NAME, PLUGIN_NAMESPACE, PLUGIN_VERSION } from "./constants";
 import { rules } from "./rules";
@@ -17,14 +15,6 @@ declare module "@typescript-eslint/utils/ts-eslint" {
   }
 }
 
-// Omit `configs` from Plugin type to avoid index signature conflicts
-type Plugin = Omit<TSESLint.FlatConfig.Plugin, "configs"> & {
-  configs: {
-    recommended: TSESLint.FlatConfig.Config;
-    recommendedLegacy: TSESLint.ClassicConfig.Config;
-  };
-};
-
 const plugin = {
   /**
    * @see {@link https://eslint.org/docs/latest/extend/plugins#meta-data-in-plugins}
@@ -35,17 +25,17 @@ const plugin = {
     recommended: {
       ...recommended,
       plugins: {
-        get [PLUGIN_NAMESPACE](): Plugin {
+        get [PLUGIN_NAMESPACE](): typeof plugin {
           return plugin;
         },
       },
     },
     recommendedLegacy: {
       ...recommended,
-      plugins: [PLUGIN_NAME],
+      extends: ["plugin:z/recommended"],
     },
   },
-} satisfies Plugin;
+};
 
 const { configs } = plugin;
 

@@ -11,14 +11,19 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     permissions:
-      security-events: write
-      actions: read
-      contents: read
+      actions: read # Reaquired for `cancelled()`
+      contents: read # Required for `actions/checkout`
+      security-events: write # Required to upload SARIF file to code scanning alerts
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
 
       - name: Enable Corepack
+        # `corepack prepare --activate` is necessary as there is otherwise an error
+        # Error: Cannot find matching keyid: {"signatures":[{"sig":"..."}...]...}
+        #
+        # @see {@link https://vercel.com/guides/corepack-errors-github-actions}
+        # @see {@link https://github.com/nodejs/corepack/issues/612}
         run: |
           corepack enable
           corepack prepare --activate
@@ -28,7 +33,6 @@ jobs:
         with:
           node-version-file: .node-version
           cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install
@@ -40,11 +44,11 @@ jobs:
 
       - name: Upload SARIF file
         # https://github.com/jeremy-code/eslint-plugin-z/security/code-scanning
-        if: ${{ failure() && steps.eslint.outcome == 'failure' }}
+        if: ${{ cancelled() && steps.eslint.conclusion == 'failure' }}
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: results.sarif
-          category: ESLint
+          sarif_file: ${{ steps.eslint.outputs.output-file }}
+          category: eslint
 
       - name: Check code formatting with Prettier
         run: pnpm run format:check
@@ -53,8 +57,7 @@ jobs:
         run: pnpm run check-types
 
       - name: Run tests
-        # https://nodejs.org/api/os.html#osavailableparallelism
-        run: pnpm test --ci --max-workers $(node -p "os.availableParallelism()")
+        run: pnpm test
 
       - name: Build
         run: pnpm run build

@@ -4,6 +4,7 @@
 verifyDepsBeforeRun: install
 onlyBuiltDependencies:
   - esbuild
+  - unrs-resolver
 
 # https://pnpm.io/cli/run#shellemulator
 shellEmulator: true

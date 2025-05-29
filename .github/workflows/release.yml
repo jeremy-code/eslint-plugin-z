@@ -13,10 +13,9 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     permissions:
-      attestations: write
-      id-token: write
-      contents: write
-      pull-requests: write
+      id-token: write # This is required for requesting the JWT
+      contents: write # Required to create release
+      pull-requests: write # Required to create PR
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v4
@@ -36,8 +35,8 @@ jobs:
         with:
           node-version-file: .node-version
           cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
           registry-url: https://registry.npmjs.org
+          always-auth: true
 
       - name: Install dependencies
         run: pnpm install
