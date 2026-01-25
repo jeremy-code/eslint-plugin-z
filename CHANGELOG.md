@@ -1,5 +1,11 @@
 # eslint-plugin-z
 
+## 0.2.2
+
+### Patch Changes
+
+- [`b7d4f1a`](https://github.com/jeremy-code/eslint-plugin-z/commit/b7d4f1addab87967bafb1d40b8f4db472591b5d4) Thanks [@jeremy-code](https://github.com/jeremy-code)! - bump dependencies
+
 ## 0.2.1
 
 ### Patch Changes
