@@ -1,5 +1,5 @@
 import eslint from "@eslint/js";
-import comments from "@eslint-community/eslint-plugin-eslint-comments/configs";
+import { recommended as commentsRecommended } from "@eslint-community/eslint-plugin-eslint-comments/configs";
 import { defineConfig, globalIgnores } from "eslint/config";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import eslintPlugin from "eslint-plugin-eslint-plugin";
@@ -19,17 +19,12 @@ export default defineConfig(
    * @see {@link https://eslint.org/docs/latest/use/configure/configuration-files#globally-ignoring-files-with-ignores}
    */
   globalIgnores(["dist/"]),
-  /**
-   * Add `name` property to "recommended" ESLint config, which doesn't exist for compatibility
-   *
-   * @see {@link https://github.com/eslint/eslint/blob/main/packages/js/src/configs/eslint-recommended.js#L11}
-   */
-  { name: "@eslint/js/recommended", ...eslint.configs.recommended },
+  eslint.configs.recommended,
   tseslint["configs"].recommendedTypeChecked,
-  comments.recommended,
+  commentsRecommended,
   pluginImportX["flatConfigs"].recommended,
   pluginImportX["flatConfigs"].typescript,
-  eslintPlugin.configs["flat/recommended"],
+  eslintPlugin.configs.recommended,
   {
     linterOptions: {
       reportUnusedInlineConfigs: "error",
@@ -79,7 +74,7 @@ export default defineConfig(
     files: TEST_FILE_GLOBS,
     extends: [
       pluginJest.configs["flat/recommended"],
-      eslintPlugin.configs["flat/tests-recommended"],
+      eslintPlugin.configs["tests-recommended"],
       {
         rules: {
           /**

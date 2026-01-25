@@ -31,7 +31,6 @@
 ### Patch Changes
 
 - [`f385d65`](https://github.com/jeremy-code/eslint-plugin-z/commit/f385d655b029c88754c5f624740a2dd7976d84f2) Thanks [@jeremy-code](https://github.com/jeremy-code)! - # chore: initial commit
-
   - initial commit of `eslint-plugin-z` package v0.1.0
   - Add rules `no-duplicate-enum-values`, `no-throw-refine`, `prefer-nullish`, and `prefer-tuple`
   - Add docs for rules in `./docs`
